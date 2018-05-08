@@ -1,0 +1,751 @@
+<!doctype html>
+<!--
+  Material Design Lite
+  Copyright 2015 Google Inc. All rights reserved.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>Questions</title>
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="icon" sizes="192x192" href="images/android-desktop.png">
+
+    <!-- Add to homescreen for Safari on iOS -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <link rel="apple-touch-icon-precomposed" href="images/ios-desktop.png">
+
+    <!-- Tile icon for Win8 (144x144 + tile color) -->
+    <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+
+    <link rel="shortcut icon" href="images/favicon.png">
+
+    <!-- SEO: If your mobile URL is different from the desktop URL, add a canonical link to the desktop page https://developers.google.com/webmasters/smartphone-sites/feature-phones -->
+    <!--
+    <link rel="canonical" href="http://www.example.com/">
+    -->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.cyan-light_blue.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+    #view-source {
+      position: fixed;
+      display: block;
+      right: 0;
+      bottom: 0;
+      margin-right: 40px;
+      margin-bottom: 40px;
+      z-index: 900;
+    }
+    .font-blue
+    {
+    		color:rgb(20, 165, 255);
+    }
+     .font-black
+    {
+    		color:black;
+    }
+    .font-gray
+    {
+    		color:gray;
+    }
+      .font-white
+    {
+    		color:white;
+    }
+    .button-blue
+    {	
+    		background-color: rgb(20, 165, 255);
+    		color: white;
+    }
+     .button-red
+    {	
+    		background-color: red;
+    		color: white;
+    }
+    .layout-right
+    {
+    		float: right;
+    }
+    .warp
+    {
+    		width: 100%;
+    }
+    	.td-first
+    	{
+    		border-top: 1px solid rgb(232, 232, 232);
+    		
+    	}
+    	.td
+    	{
+    		border-bottom: 1px solid rgb(232, 232, 232);
+    	}
+    	td
+    	{
+    		padding:10px;
+    	
+    	}
+    	table
+    	{
+    		width: 100%;
+    	}
+    	.toolbar
+    	{
+    			
+    			width: 100%;
+    			padding-top:5px;
+    			padding-bottom:5px;
+    	}
+    	.toolbar-button
+    	{
+    		color: rgb(194, 194, 194);
+    		cursor: pointer;
+    	}
+    	.toolbar-button:hover {
+		color:gray;
+	}
+    </style>
+				<!-- the following links add the CSS and Javascript required for the Leaflet Map -->
+					<link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css"
+					integrity="sha512-wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw=="crossorigin=""/>
+		
+					<script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"
+					integrity="sha512-mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA=="crossorigin=""></script>
+ 
+				<!-- the following CSS is used to set the size of the Map -->
+					<style type="text/css">
+					#mapid { height: 800px; }
+					</style>
+					
+				<!-- the following links incorporate the CSS required for custom icon creation -->
+					<link rel="stylesheet" href="./css/ionicons.min.css">
+					<link rel="stylesheet" href="./css/leaflet.awesome-markers.css">
+					<script src="./js/leaflet.awesome-markers.js">
+					</script>			
+  </head>
+  <body>
+    <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header">
+      <header class="demo-header mdl-layout__header mdl-color--grey-100 mdl-color-text--grey-600">
+        <div class="mdl-layout__header-row">
+          <span class="mdl-layout-title">Home</span>
+          <div class="mdl-layout-spacer"></div>
+          
+        </div>
+      </header>
+      <div class="demo-drawer mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50">
+        <header class="demo-drawer-header">
+          <img src="images/user.jpg" class="demo-avatar">
+          <div class="demo-avatar-dropdown">
+            <span>ucesbz0@ucl.ac.uk</span>
+            <div class="mdl-layout-spacer"></div>
+            <button id="accbtn" class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--icon">
+              <i class="material-icons" role="presentation">arrow_drop_down</i>
+              <span class="visuallyhidden">Accounts</span>
+            </button>
+            <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect" for="accbtn">
+              <li class="mdl-menu__item">ucesbz0@ucl.ac.uk</li>
+              <li class="mdl-menu__item"><i class="material-icons">add</i>Add another account...</li>
+            </ul>
+          </div>
+        </header>
+        <nav class="demo-navigation mdl-navigation mdl-color--blue-grey-800">
+         <a class="mdl-navigation__link" href="#"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i>Home</a>
+          <a class="mdl-navigation__link" href="https://moodle.ucl.ac.uk/mod/forum/view.php?id=2259367"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">forum</i>Forum</a>
+          <a class="mdl-navigation__link" href="user guide.html"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">flag</i>User Guide</a>
+          <div class="mdl-layout-spacer"></div>
+          <a class="mdl-navigation__link" href=""><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">help_outline</i><span class="visuallyhidden">Help</span></a>
+        </nav>
+      </div>
+      <div class="mdl-layout__content mdl-color--grey-100">
+        <div class="mdl-grid demo-content">
+		   <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+		   <div id="mapid" style="width: 100%; height: 500px;"></div>
+          </div>
+                    
+           <div class="demo-charts mdl-color--white mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-grid">
+           	<span class="font-black">Click the map to add new questions points. 
+			<br width=0>
+						Click existing red markers to view/edit/delete submitted questions points.
+			<br width=0>
+						Click User Guide on the left for Manual.
+						</span>
+          	 <div class="mdl-layout-spacer"></div><div class="toolbar">
+          						<div style="float: right">
+          							<div id="buttons_info" style="display: none">
+          								<span  class="mdl-button button-blue" onclick="editQuestion()">Edit</span>
+	          							<span class="mdl-button button-red" onclick="delQuestion()">Delete</span>
+          							</div>
+          							<div id="buttons_edit" style="display: none">
+	          							<span  class="mdl-button button-blue" onclick="saveQuestion()">Save</span>
+	          							<span class="mdl-button button-red" onclick="cancelEdit()">Cancel</span>
+          							</div>
+          							<div id="buttons_add" style="display: none">
+	          							<span  class="mdl-button button-blue" onclick="addQuestion()">Add</span>
+          							</div>
+          						</div>
+          					</div>
+          <div class="warp"></div>
+          	<table>
+          		<tbody>
+          			<tr>
+          				<td class="td-first">
+          					<div id="question_info" style="display: none">
+          					<div id="question"></div>
+          					<ul >
+          						<li>A:<span id="option1"></span></li>
+          						<li>B:<span id="option2"></span></li>
+          						<li>C:<span id="option3"></span></li>
+          						<li>D:<span id="option4"></span></li>
+          					</ul>
+          					<div>Answer:<select  id="answer" style="width:100px" disabled="disabled">
+          						<option value="1">A</option>
+          						<option value="2">B</option>
+          						<option value="3">C</option>
+          						<option value="4">D</option>
+          					</select></div>
+          					<div>
+          						<i class="material-icons font-blue">location_on</i><span class="font-gray" id="location">lat:0,lng:0</span>
+          					</div>
+          					
+          					</div>
+          					<div id="question_form" style="display: none">
+          					<div>Question:<input type="text" id="f_question" style="width:300px"></div>
+          					<ul>
+          						<li>A:<input type="text" id="f_option1" style="width:200px" ></li>
+          						<li>B:<input type="text" id="f_option2" style="width:200px"></li>
+          						<li>C:<input type="text" id="f_option3" style="width:200px"></li>
+          						<li>D:<input type="text" id="f_option4" style="width:200px"></li>
+          					</ul>
+          					<div>Answer:<select  id="f_answer" style="width:100px">
+          						<option value="1">A</option>
+          						<option value="2">B</option>
+          						<option value="3">C</option>
+          						<option value="4">D</option>
+          					</select></div>
+          					<div>
+          						<i class="material-icons font-blue">location_on</i>
+          						lat:<input type="text" id="lat" style="width:140px" readonly="readonly">
+          						lng:<input type="text" id="lng" style="width:140px"  readonly="readonly">
+          					</div>
+          					</div>
+          					
+          				</td>
+          			</tr>
+          		</tbody>
+          	</table>
+          </div>
+          
+                      
+          </div> 
+          
+        </div>
+      </div>
+    <script type="text/javascript" src="cordova.js"></script>
+   <script src="./js/index.js"></script> 
+    <script src="./js/appActivity.js"></script> 
+     <script src="./js/uploadData.js"></script> 
+    <script src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script>
+    		
+    		//new marker by cliking map
+	    var newmarker=null;
+    		//current choosing marker
+		var currentSelectMarker=null;
+    		
+    		//current marker editable
+		var editable=false;
+		var idindex=999;
+		
+		//pink marker
+		var markerPink = L.AwesomeMarkers.icon({
+					icon: 'play',
+					markerColor: 'pink'});
+		
+		//red marker
+		var markerRed = L.AwesomeMarkers.icon({
+					icon: 'play',
+					markerColor: 'red'});
+		var geojsonFeature = {
+				"type": "Feature",
+				"properties": {
+					"name": "London",
+					"popupContent": "This is where UCL is based"
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [51.524579, -0.134068]
+				}
+			};
+				// and add it to the map
+				
+				var popup = L.popup();
+				// create an event detector to wait for the user's click event and then use the popup to show them where they clicked
+				// note that you don't need to do any complicated maths to convert screen coordinates to real world coordiantes - the Leaflet API does this for you
+				function onMapClick(e) {
+			
+					//show question setting interface
+					showAddQuestion(e.latlng);
+					
+					//remove marker
+					if(newmarker!=null)
+						newmarker.remove();
+					
+					
+					if(currentSelectMarker!=null)
+					{
+						//restore the selecting marker to pink
+						currentSelectMarker.setIcon(markerPink);
+						currentSelectMarker=null;
+					}
+					//create a red marker
+					newmarker=L.marker(e.latlng, {icon:markerRed,draggable:true});
+					
+					//add to the map
+					newmarker.addTo(mymap);
+					//marker dragging ability
+					newmarker.on("drag",function(e){
+						//update with new marker coord
+						updateCurrentLatlng(e.latlng);
+					});
+				}
+				// now add the click event detector to the map
+				mymap.on('click', onMapClick);			
+				
+		
+		/**
+		* Add question to map and create marker
+		*/
+		function addQuestionToMap(question)
+		{
+			
+			//creat a new marker and add it to map
+			var marker=L.marker([question.lat,question.lng], {icon:markerPink,draggable:true}).addTo(mymap);
+			//setting question for current marker
+			marker.question=question;
+			//marker able to drag
+			setupMarkerDragEvent(marker);
+			//click event for marker
+			setupMarkerClickEvent(marker);
+			return marker;
+		}
+		/**
+		   edit question
+		*/
+		function editQuestion()
+		{
+			
+			if(currentSelectMarker!=null)
+			{
+				//set question editableable
+				editable=true;
+				//show question setting interface
+				show("question_form");
+				
+				//hide question information
+				hide("question_info");
+				
+				//hide add button
+				hide("buttons_add");
+				//hide question info button
+				hide("buttons_info");
+				
+				//show question edit button
+				show("buttons_edit");
+				
+				//get selected marker question 
+				var question=currentSelectMarker.question;
+				
+				//show current question coord 
+				updateCurrentLatlng(question);
+				
+				//show question
+				document.getElementById("f_question").value=question.question;
+				
+				//show opt 1
+				document.getElementById("f_option1").value=question.option1;
+				
+				//show opt 2
+				document.getElementById("f_option2").value=question.option2;
+				//show opt 3
+				document.getElementById("f_option3").value=question.option3;
+				//show opt 4
+				document.getElementById("f_option4").value=question.option4;
+				
+				//show answer
+				document.getElementById("f_answer").value=question.answer;
+			}
+		}
+		/**
+			deleting question
+		*/
+		function  delQuestion()
+		{
+			if(currentSelectMarker!=null)
+			{
+				if(!confirm("Do you want to delete the question?"))
+					return;
+			    var datastr="id="+currentSelectMarker.question.id;
+			    postData("delquestion",datastr,function(data){
+					if(data=="ok")
+					{
+						//remove marker from map
+						currentSelectMarker.remove();
+						//make it uneditable
+						editable=false;
+						
+						//hide question editing face
+						hide("question_form");
+						//hide question info face
+						hide("question_info");
+						//hide add button
+						hide("buttons_add");
+						//hide info button
+						hide("buttons_info");
+						//hide edit button
+						hide("buttons_edit");
+					}
+					else
+						alert("fail to delete question");
+				});
+				
+			}
+		}
+		/**
+			show id element
+		*/
+		function show(id)
+		{
+			//get element by id
+			var elm=document.getElementById(id);
+			if(elm!=null)
+				elm.style.display="block";//show element
+		}
+		/**
+			hide id element
+		*/
+		function hide(id)
+		{
+			//get element by id
+			var elm=document.getElementById(id);
+			if(elm!=null)
+				elm.style.display="none";//hide element
+		}
+		/**
+			show question adding interface
+		*/
+		function showAddQuestion(latlng)
+		{
+			//cancel edit
+			cancelEdit();
+			//show current question coord 
+			updateCurrentLatlng(latlng);
+			
+			//show question setting interface
+			show("question_form");
+			//hide question info face
+			hide("question_info");
+			//show question adding button
+			show("buttons_add");
+			//hide question info button
+			hide("buttons_info");
+			//hide question editing button
+			hide("buttons_edit");
+			
+			//clear all inputs
+			document.getElementById("f_question").value="";
+			document.getElementById("f_option1").value="";
+			document.getElementById("f_option2").value="";
+			document.getElementById("f_option3").value="";
+			document.getElementById("f_option4").value="";
+			document.getElementById("f_answer").value="";
+		}
+		/**
+			cancel edit
+		**/
+		function cancelEdit()
+		{
+			if(currentSelectMarker!=null)
+			{
+				//set current marker uneditable
+				editable=false;
+				//hide question form
+				hide("question_form");
+				//show question info button
+				show("question_info");
+				//hide question adding button
+				hide("buttons_add");
+				//show question info button
+				show("buttons_info");
+				//hide question edit button
+				hide("buttons_edit");
+				//get original question info
+				var question=currentSelectMarker.question;
+				//restore the marker to previous coord
+				currentSelectMarker.setLatLng(L.latLng(question.lat, question.lng));
+				
+			}
+		}
+		/**
+			add question
+		*/
+		function addQuestion()
+		{
+			//get question element
+			var question=document.getElementById("f_question").value;
+			//get opt 1
+			var option1=document.getElementById("f_option1").value;
+			//get opt 2
+			var option2=document.getElementById("f_option2").value;
+			//get opt 3
+			var option3=document.getElementById("f_option3").value;
+			//get opt 4
+			var option4=document.getElementById("f_option4").value;
+			
+			//get the correct answer
+			var answer=document.getElementById("f_answer").value;
+			
+			//get the coord
+			var lat=document.getElementById("lat").value;
+			var lng=document.getElementById("lng").value;
+			
+			//determine if all blanks have been filled
+			if(question.length==0
+					||option1.length==0
+					||option2.length==0
+					||option3.length==0
+					||option4.length==0
+					||answer.length==0
+					||lat.length==0
+					||lng.length==0
+					)
+			{
+				//alert if insufficinet info
+				alert("Please fill all information");
+				return;
+			}
+			
+			//upload to server
+			var datastr="question="+question+"&option1="+option1+"&option2="+option2+"&option3="+option3+"&option4="+option4
+				+"&answer="+answer+"&lat="+lat+"&lng="+lng;
+			postData("addquestion",datastr,function(data){
+				if(data=="ok")
+				{
+					alert("Adding question successful");
+					//reload page
+					window.location.reload();
+				}
+				else
+					alert("Fail to add question");
+			});
+			
+		}
+		/**
+			save question
+		*/
+		function saveQuestion()
+		{
+			//get question element
+			var question=document.getElementById("f_question").value;
+			//get opt 1
+			var option1=document.getElementById("f_option1").value;
+			//get opt 2
+			var option2=document.getElementById("f_option2").value;
+			//get opt 3
+			var option3=document.getElementById("f_option3").value;
+			//get opt 4
+			var option4=document.getElementById("f_option4").value;
+			//get correct answer
+			var answer=document.getElementById("f_answer").value;
+			
+			//get the coord
+			var lat=document.getElementById("lat").value;
+			var lng=document.getElementById("lng").value;
+			
+			//determine if all blanks have been filled
+			if(question.length==0
+					||option1.length==0
+					||option2.length==0
+					||option3.length==0
+					||option4.length==0
+					||answer.length==0
+					||lat.length==0
+					||lng.length==0
+					)
+			{
+				//alert if insufficinet info
+				alert("Please fill all information");
+				return;
+			}
+			//uneditable
+			editable=false;
+			//update current question marker info
+			currentSelectMarker.question.question=question;
+			currentSelectMarker.question.option1=option1;
+			currentSelectMarker.question.option2=option2;
+			currentSelectMarker.question.option3=option3;
+			currentSelectMarker.question.option4=option4;
+			currentSelectMarker.question.answer=answer;
+			currentSelectMarker.question.lat=lat;
+			currentSelectMarker.question.lng=lng;
+		
+			
+			//upload to server
+			var datastr="id="+currentSelectMarker.question.id+"&question="+question+"&option1="+option1+"&option2="+option2+"&option3="+option3+"&option4="+option4
+				+"&answer="+answer+"&lat="+lat+"&lng="+lng;
+			postData("updatequestion",datastr,function(data){
+				if(data=="ok")
+				{
+					alert("update question successful");
+					//show current selected marker question info
+					showQuestionDetail(currentSelectMarker.question);
+				}
+				else
+					alert("fail to update question");
+			});
+			
+			
+		}
+		/**
+			update current coord
+		*/
+		function updateCurrentLatlng(latlng)
+		{
+			//get "lat" title
+			var lat=document.getElementById("lat");
+			//get "lat" value
+			lat.value=latlng.lat;
+			//get "lng" title
+			var lng=document.getElementById("lng");
+			//get "lng" value
+			lng.value=latlng.lng;
+		}
+		/**
+		  show the question info
+		*/
+		function showQuestionDetail(question)
+		{
+			//hide question form
+			hide("question_form");
+			//show question info page
+			show("question_info");
+			//hide adding question button
+			hide("buttons_add");
+			//show question info button
+			show("buttons_info");
+			//hide question editing button
+			hide("buttons_edit");
+			
+			var question_div=document.getElementById("question");
+			//show the question
+			question_div.innerHTML=question.question;
+			
+			for(var i=1 ;i<5;i++)
+			{
+				//get all the options	
+				var op=question["option"+i];
+				//show the options info
+				document.getElementById("option"+i).innerHTML=op;
+			}
+			//get the question answer
+			document.getElementById("answer").value=question.answer;
+			var lc=document.getElementById("location");
+			//show the coord for the question
+			lc.innerHTML="lat:"+question.lat+",lng:"+question.lng;
+		}
+		/**
+			select marker
+		*/
+		function selectMarker(marker)
+		{
+			//if re-select the same marker
+			if(currentSelectMarker==marker)
+				return;
+			//cancel edit
+			cancelEdit();
+			//set it to uneditable
+			editable=false;
+			//remove marker by previous click on the map
+			if(newmarker!=null)
+			{
+				newmarker.remove();
+				newmarker=null;
+			}
+		
+			if(currentSelectMarker!=null)
+			{
+				//restore the unselected marker to pink
+				currentSelectMarker.setIcon(markerPink);
+			}
+			//make it the selected marker
+			currentSelectMarker=marker;
+			//change it to red marker
+			marker.setIcon(markerRed);
+			//show the marker correspond question
+			showQuestionDetail(marker.question);
+		}
+		/**
+			marker draging 
+		*/
+		function setupMarkerDragEvent(marker)
+		{
+			marker.on("drag",function(e){
+					//update the coord
+					updateCurrentLatlng(e.latlng);
+				});
+			marker.on("dragstart",function(e){
+					//if the marker is uneditable or not the previous selected, then it cannot be dragged
+					if(currentSelectMarker!=marker||!editable)
+						e.stopPropagation();//stop the whole action
+				});
+		}
+		/**
+			marker respond to clicking
+		*/
+		function setupMarkerClickEvent(marker)
+		{
+			marker.on('click',function(e){
+				//select clicked marker
+				selectMarker(marker);
+			});
+		}
+		/**
+			load data
+		*/
+		function loadData()
+		{
+			getData("getallquestions",function(data){
+				var questions=JSON.parse(data);
+				for(var i in questions)
+				{
+					var question=questions[i];
+					addQuestionToMap(question);
+				}
+			});
+		}
+		//get location
+		getLocation();
+		loadData();
+	</script>
+  </body>
+</html>
